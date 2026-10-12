@@ -61,3 +61,4 @@ FT_EPOCHS, FT_BATCH, FT_MAXLEN, FT_LR, FT_WARMUP = 2, 32, 64, 2e-5, 0.1
 FT_NAME = "indicsbert-ft"              # model name used in metrics rows / embedding files
 TRAIN_PAIRS = PROCESSED / "train_pairs.parquet"
 FT_RUN_JSON = RESULTS / "ft_run.json"
+FT_MODEL_DIR = ROOT / "models" / FT_NAME      # saved fine-tuned model (gitignored, about 1 GB)

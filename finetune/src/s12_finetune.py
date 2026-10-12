@@ -43,6 +43,8 @@ def main():
     trainer.train()
     train_s = time.time() - t0
     model.max_seq_length = 128  # eval-time length, same as the frozen baseline
+    model_dir = config.FT_MODEL_DIR.with_name(config.FT_NAME + sfx)
+    model.save(str(model_dir))  # kept so the demo can load it side by side with the baseline
 
     enc = lambda x: model.encode(x, normalize_embeddings=True, batch_size=64, show_progress_bar=False).astype("float32")
     config.EMB_DIR.mkdir(parents=True, exist_ok=True)

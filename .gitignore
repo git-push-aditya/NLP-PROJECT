@@ -10,3 +10,4 @@ finetune/.venv
 finetune/data/processed/emb/
 finetune/data/processed/translation_cache.sqlite
 finetune/data/processed/scores*.parquet
+finetune/models/
