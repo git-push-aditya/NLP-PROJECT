@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+# large / regenerable artifacts
+data/processed/emb/
+*_smoke*
+*.zip
+# finetune/ is committed separately once it has its own content
+finetune/.venv

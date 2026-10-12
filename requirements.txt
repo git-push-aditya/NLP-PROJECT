@@ -1,0 +1,12 @@
+# CPU torch: pip install --index-url https://download.pytorch.org/whl/cpu torch first (optional)
+torch==2.14.1
+transformers==4.57.6
+datasets==5.0.1
+sentence-transformers==5.7.0
+numpy==2.5.4
+pandas==3.0.6
+pyarrow==26.0.0
+scikit-learn==1.9.1
+matplotlib==3.11.2
+gradio==6.17.3
+sentencepiece==0.2.2
