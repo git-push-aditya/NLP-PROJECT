@@ -7,3 +7,6 @@ data/processed/emb/
 *.zip
 # finetune/ is committed separately once it has its own content
 finetune/.venv
+finetune/data/processed/emb/
+finetune/data/processed/translation_cache.sqlite
+finetune/data/processed/scores*.parquet

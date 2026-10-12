@@ -14,7 +14,7 @@ Living file: updated after every phase. Newest status first, details per phase b
 | 5 | Diagnostics / error analysis | Done |
 | 6 | Out-of-domain check (MahaParaphrase) | Done |
 | 7 | Gradio demo | Done |
-| 8 | Fine-tuning | Deferred (end-term, optional) |
+| 8 | Fine-tuning (in `finetune/`) | In progress: scripts and Colab notebooks ready, run 1 of 2 not yet done |
 
 Deferred by decision: kill-and-resume test of translation; git commit of the work (nothing committed yet, only the initial commit exists).
 
@@ -179,6 +179,18 @@ All six classified correctly. **Be upfront in the viva:** these examples were se
 | Demo: model load / per prediction / RAM | Local CPU | about 10 s / about 0.1-0.7 s / about 1 GB |
 
 **Data size:** 3,000 pairs (1,000 dev, 2,000 test) x 2 questions x 3 languages. Encoders: IndicSBERT (about 238M params), LaBSE (about 471M), paraphrase-multilingual-mpnet (about 278M); translation model NLLB-200 distilled 600M. No training anywhere (zero-shot, frozen).
+
+## Phase 8: Fine-tuning (in progress, isolated in `finetune/`)
+
+**Safety:** the finished Phases 0-7 were committed and pushed (private repo `git-push-aditya/NLP-PROJECT`, commit `fb07b83`) before any fine-tuning work. All fine-tuning lives in `finetune/`, a copy whose `config.py` resolves paths to that folder, so the baseline cannot be modified by it.
+
+**Built and smoke-tested locally (tiny data):** `s10_prep_train.py` (24,000 balanced pairs from QQP `train`; 16,592 train pairs dropped for sharing a question with dev/test, so zero leakage; 44,439 unique questions to translate), `s11_translate_train.py` (reuses NLLB + sqlite cache), `s12_finetune.py` (OnlineContrastiveLoss, 2 epochs, batch 32, max_seq 64, lr 2e-5, 10% warmup; then encodes dev/test and MahaParaphrase with the tuned model), `s13_eval_ft.py` (same protocol as the baseline; F1/AUC plus B5-negative FPR and B1-positive recall vs frozen IndicSBERT; writes `ft_vs_base.csv`).
+
+**Needs 2 Colab runs (T4):** run 1 translate (about 75 min), run 2 train + encode (about 15-25 min). See `finetune/README.md`.
+
+**Bug caught by the smoke test:** the HF trainer needs `accelerate`, not in our requirements; installed locally and added to the Colab notebook's pip line. Also verified the identical fine-tuned/baseline smoke scores were due to a zero learning rate on a single warmup step, not a pipeline bug: with a forced real update the embeddings changed (cosine to baseline 0.49).
+
+**Expectation to check after training:** the zero-shot result and its clean baseline are the reference point; watch whether fine-tuning raises AUC but also worsens B5-negative false positives (more lexical shortcutting).
 
 ---
 
